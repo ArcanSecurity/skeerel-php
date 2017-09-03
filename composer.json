@@ -1,0 +1,25 @@
+{
+  "name": "arcansecurity/skeerel-php",
+  "description": "Skeerel PHP Library",
+  "keywords": [
+    "skeerel",
+    "php",
+    "passwordless authentication",
+    "api"
+  ],
+  "homepage": "https://skeerel.com/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ArcanSecurity and contributors",
+      "homepage": "https://github.com/ArcanSecurity/skeerel-php/graphs/contributors"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "phpseclib/phpseclib": "~2.0"
+  },
+  "autoload": {
+    "psr-4": { "Skeerel\\" : "Skeerel/" }
+  }
+}
