@@ -55,6 +55,22 @@ class IndividualAddress extends BaseAddress
         }
     }
 
+    public function getTitle() {
+        return $this->title;
+    }
+
+    public function getLastName() {
+        return $this->lastName;
+    }
+
+    public function getFirstName() {
+        return $this->firstName;
+    }
+
+    public function getBirthDate() {
+        return $this->birthDate;
+    }
+
     public function isIndividual() {
         return true;
     }

@@ -41,6 +41,18 @@ class CompanyAddress extends BaseAddress
         }
     }
 
+    public function getStatus() {
+        return $this->status;
+    }
+
+    public function getCompanyName() {
+        return $this->companyName;
+    }
+
+    public function getVatNumber() {
+        return $this->vatNumber;
+    }
+
     public function isIndividual() {
         return false;
     }

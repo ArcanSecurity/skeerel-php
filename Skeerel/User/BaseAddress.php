@@ -82,6 +82,36 @@ abstract class BaseAddress
         }
     }
 
+    public function getAddress() {
+        return $this->address;
+    }
+
+    public function getAddressLine2() {
+        return $this->addressLine2;
+    }
+
+    public function getAddressLine3() {
+        return $this->addressLine3;
+    }
+
+    public function getZipCode() {
+        return $this->zipCode;
+    }
+
+    public function getCity() {
+        return $this->city;
+    }
+
+    public function getCountry() {
+        return $this->country;
+    }
+
+    public function getPhone() {
+        return $this->phone;
+    }
+
+
+
     public abstract function isIndividual();
 
     public abstract function isCompany();
