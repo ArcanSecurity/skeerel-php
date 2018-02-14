@@ -74,15 +74,20 @@ class Skeerel
             throw new APIException("Error " . $errorCode . ": " . $errorMsg);
         }
 
-        if (!isset($json['uid'])  || !is_string($json['uid'])  || !UUID::isValid($json['uid']) ||
-            !isset($json['mail']) || !is_string($json['mail']) || filter_var($json['mail'], FILTER_VALIDATE_EMAIL) === false) {
+        if (!isset($json['data']) || !is_array($json['data'])) {
+            throw new APIException("Unexpected error: status is ok, but cannot get data");
+        }
+
+        $data = $json['data'];
+        if (!isset($data['uid'])  || !is_string($data['uid'])  || !UUID::isValid($data['uid']) ||
+            !isset($data['mail']) || !is_string($data['mail']) || filter_var($data['mail'], FILTER_VALIDATE_EMAIL) === false) {
             throw new APIException("Unexpected error: status is ok, but cannot get user id and/or mail");
         }
 
         $shippingAddress = null;
         $billingAddress = null;
-        if (null !== $this->rsaInstance && isset($json['addresses'])) {
-            $addresses = Crypto::verifySignatureAndDecrypt($json['addresses'], $this->rsaInstance);
+        if (null !== $this->rsaInstance && isset($data['addresses'])) {
+            $addresses = Crypto::verifySignatureAndDecrypt($data['addresses'], $this->rsaInstance);
 
             if (isset($addresses['shipping_address'])) {
                 $shippingAddress = BaseAddress::build($addresses['shipping_address']);
@@ -93,7 +98,7 @@ class Skeerel
             }
         }
 
-        return new User($json['uid'], $json['mail'], $shippingAddress, $billingAddress);
+        return new User($data['uid'], $data['mail'], $shippingAddress, $billingAddress);
     }
 
     public static function generateSessionStateParameter($sessionName = self::DEFAULT_COOKIE_NAME) {
