@@ -13,14 +13,14 @@ Minimum PHP version: 5.3.3
 
 ## Via composer
 
-`composer require arcansecurity/skeerel-php 2.0.2`
+`composer require arcansecurity/skeerel-php 2.0.3`
 
 Or in your `composer.json` file:
 
 ```
 {
   "require": {
-    "arcansecurity/skeerel-php": "2.0.2"
+    "arcansecurity/skeerel-php": "2.0.3"
   }
 }
 ```
@@ -78,5 +78,5 @@ check out the Skeerel PHP sample application
 [here](https://github.com/ArcanSecurity/skeerel-sample-php).
  
 # Resources
-Check out the [API docs](http://docs.skeerel.com).  
-Access your [developer dashboard](https://account.skeerel.com).
+Check out the [API documentation](http://doc.skeerel.com).  
+Access your [customer dashboard](https://admin.skeerel.com).
