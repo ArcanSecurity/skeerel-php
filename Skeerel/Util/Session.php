@@ -16,7 +16,13 @@ class Session
     }
 
     public static function isSessionStarted() {
-        return function_exists('session_status') ? PHP_SESSION_ACTIVE === session_status() : !empty(session_id());
+        if (function_exists('session_status')) {
+            return PHP_SESSION_ACTIVE === session_status();
+        }
+
+        // arbitrary expressions are only allowed since php 5.5
+        $sessionId = session_id();
+        return !empty($sessionId);
     }
 
     public static function get($name) {
