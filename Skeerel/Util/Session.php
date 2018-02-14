@@ -12,7 +12,7 @@ use Skeerel\Exception\SessionNotStartedException;
 class Session
 {
     public static function isValidName($sessionName) {
-        return is_string($sessionName) && preg_match('/^[a-zA-Z_-][a-zA-Z0-9_-]*$', $sessionName) === 1;
+        return is_string($sessionName) && preg_match("/^[a-zA-Z_][a-zA-Z0-9_-]*$/", $sessionName) === 1;
     }
 
     public static function isSessionStarted() {
