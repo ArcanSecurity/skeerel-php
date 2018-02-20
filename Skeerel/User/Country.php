@@ -3,7 +3,7 @@
  * Created by Florian Pradines
  */
 
-namespace Skeerel\Util;
+namespace Skeerel\User;
 
 
 class Country
