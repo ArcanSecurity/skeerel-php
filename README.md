@@ -57,7 +57,7 @@ following lines
 
 ```php
 // Verify that the state parameter is the same
-if (\Skeerel\Skeerel::verifySessionStateParameter($_GET['state'])) {
+if (\Skeerel\Skeerel::verifyAndRemoveSessionStateParameter($_GET['state'])) {
     $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET', 'YOUR_RSA_PRIVATE_KEY');
     $user = $skeerel->getUser($_GET['token']);
 }

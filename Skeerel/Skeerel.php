@@ -108,4 +108,10 @@ class Skeerel
     public static function verifySessionStateParameter($stateValue, $sessionName = self::DEFAULT_COOKIE_NAME) {
         return Session::get($sessionName) === $stateValue;
     }
+
+    public static function verifyAndRemoveSessionStateParameter($stateValue, $sessionName = self::DEFAULT_COOKIE_NAME) {
+        $result = Session::get($sessionName) === $stateValue;
+        Session::remove($sessionName);
+        return $result;
+    }
 }
