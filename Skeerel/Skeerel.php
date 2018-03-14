@@ -42,7 +42,7 @@ class Skeerel
             throw new IllegalArgumentException("websiteSecret must be a string");
         }
 
-        if (null !== $rsaPrivateKey) {
+        if (null !== $rsaPrivateKey && !empty($rsaPrivateKey)) {
             $this->rsaInstance = new RSA();
             $this->rsaInstance->setEncryptionMode(RSA::ENCRYPTION_OAEP);
             $this->rsaInstance->setHash("sha256");
