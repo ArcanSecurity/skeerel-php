@@ -36,8 +36,8 @@ class CompanyAddress extends BaseAddress
     }
 
     private function setVatNumber($address) {
-        if (isset($address['vat_number']) && is_string($address['vat_number'])) {
-            $this->vatNumber = $address['vat_number'];
+        if (isset($address['vat']) && is_string($address['vat'])) {
+            $this->vatNumber = $address['vat'];
         }
     }
 
