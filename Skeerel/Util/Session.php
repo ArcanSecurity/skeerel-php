@@ -34,7 +34,11 @@ class Session
             throw new IllegalArgumentException("the name of the session parameter must be a valid string name");
         }
 
-        return $_SESSION[$name];
+        if (isset($_SESSION[$name])) {
+            return $_SESSION[$name];
+        }
+
+        return null;
     }
 
     public static function set($name, $value) {
@@ -51,5 +55,19 @@ class Session
         }
 
         $_SESSION[$name] = $value;
+    }
+
+    public static function remove($name) {
+        if (!self::isSessionStarted()) {
+            throw new SessionNotStartedException();
+        }
+
+        if (!self::isValidName($name)) {
+            throw new IllegalArgumentException("the name of the session parameter must be a valid string name");
+        }
+
+        if (isset($_SESSION[$name])) {
+            unset($_SESSION[$name]);
+        }
     }
 }
