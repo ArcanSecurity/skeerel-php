@@ -7,7 +7,6 @@ namespace Skeerel\User;
 
 
 use Skeerel\Exception\IllegalArgumentException;
-use Skeerel\Util\Country;
 
 abstract class BaseAddress
 {

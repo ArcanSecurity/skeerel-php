@@ -106,8 +106,6 @@ class Skeerel
     }
 
     public static function verifySessionStateParameter($stateValue, $sessionName = self::DEFAULT_COOKIE_NAME) {
-        if (Session::get($sessionName) !== $stateValue) {
-            throw new InvalidStateException("The stored state parameter is not equal to the provided one");
-        }
+        return Session::get($sessionName) !== $stateValue;
     }
 }
