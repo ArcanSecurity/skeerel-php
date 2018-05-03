@@ -105,6 +105,10 @@ class Skeerel
         Session::set($sessionName, Random::token());
     }
 
+    public static function isSessionStateParameterGenerated($sessionName = self::DEFAULT_COOKIE_NAME) {
+        return Session::get($sessionName) !== null;
+    }
+
     public static function verifySessionStateParameter($stateValue, $sessionName = self::DEFAULT_COOKIE_NAME) {
         return Session::get($sessionName) === $stateValue;
     }
