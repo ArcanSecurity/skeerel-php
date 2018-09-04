@@ -10,6 +10,12 @@ use Skeerel\Exception\DecodingException;
 
 class Request
 {
+    /**
+     * @param $url
+     * @param $parameters
+     * @return mixed
+     * @throws DecodingException
+     */
     public static function getJson($url, $parameters) {
         $url .= '?' . http_build_query($parameters);
 

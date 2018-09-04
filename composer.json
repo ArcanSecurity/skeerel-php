@@ -3,9 +3,11 @@
   "description": "Skeerel PHP Library",
   "keywords": [
     "skeerel",
+    "arcansecurity",
     "php",
     "passwordless authentication",
-    "api"
+    "api",
+    "payment"
   ],
   "homepage": "https://skeerel.com/",
   "license": "MIT",
@@ -16,8 +18,12 @@
     }
   ],
   "require": {
-    "php": ">=5.3.3",
-    "phpseclib/phpseclib": "~2.0"
+    "php": ">=5.4.0",
+    "ext-json": "*"
+  },
+  "suggest": {
+    "ext-openssl": "Install the OpenSSL extension in order to generate better random bits.",
+    "ext-mcrypt": "Install the Mcrypt extension in backup of openssl."
   },
   "autoload": {
     "psr-4": { "Skeerel\\" : "Skeerel/" }

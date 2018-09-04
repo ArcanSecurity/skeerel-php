@@ -5,13 +5,9 @@
 
 namespace Skeerel;
 
-use phpseclib\Crypt\RSA;
+use Skeerel\Data\Data;
 use Skeerel\Exception\APIException;
 use Skeerel\Exception\IllegalArgumentException;
-use Skeerel\Exception\InvalidStateException;
-use Skeerel\User\BaseAddress;
-use Skeerel\User\User;
-use Skeerel\Util\Crypto;
 use Skeerel\Util\Random;
 use Skeerel\Util\Request;
 use Skeerel\Util\Session;
@@ -19,21 +15,33 @@ use Skeerel\Util\UUID;
 
 class Skeerel
 {
+    /**
+     * @var string
+     */
     const API_BASE = 'https://api.skeerel.com/v2/';
 
+    /**
+     * @var string
+     */
     const DEFAULT_COOKIE_NAME = 'skeerel-state';
 
+    /**
+     * @var string
+     */
     private $websiteID;
 
+    /**
+     * @var string
+     */
     private $websiteSecret;
 
     /**
-     * @var RSA
+     * Skeerel constructor.
+     * @param $websiteID
+     * @param $websiteSecret
+     * @throws IllegalArgumentException
      */
-    private $rsaInstance;
-
-    public function __construct($websiteID, $websiteSecret, $rsaPrivateKey = null)
-    {
+    public function __construct($websiteID, $websiteSecret) {
         if (!is_string($websiteID) || !UUID::isValid($websiteID)) {
             throw new IllegalArgumentException("websiteId must be a string UUID");
         }
@@ -42,22 +50,18 @@ class Skeerel
             throw new IllegalArgumentException("websiteSecret must be a string");
         }
 
-        if (null !== $rsaPrivateKey && !empty($rsaPrivateKey)) {
-            $this->rsaInstance = new RSA();
-            $this->rsaInstance->setEncryptionMode(RSA::ENCRYPTION_OAEP);
-            $this->rsaInstance->setHash("sha256");
-            $this->rsaInstance->setMGFHash("sha256");
-
-            if (!$this->rsaInstance->loadKey($rsaPrivateKey)) {
-                throw new IllegalArgumentException("the provided rsa private key is not valid");
-            }
-        }
-
         $this->websiteID = $websiteID;
         $this->websiteSecret = $websiteSecret;
     }
 
-    public function getUser($token) {
+    /**
+     * @param $token
+     * @return Data
+     * @throws APIException
+     * @throws Exception\DecodingException
+     * @throws IllegalArgumentException
+     */
+    public function getData($token) {
         if (!is_string($token)) {
             throw new IllegalArgumentException("token must be a string");
         }
@@ -74,45 +78,50 @@ class Skeerel
             throw new APIException("Error " . $errorCode . ": " . $errorMsg);
         }
 
-        if (!isset($json['data']) || !is_array($json['data'])) {
+        if (!isset($json['data'])) {
             throw new APIException("Unexpected error: status is ok, but cannot get data");
         }
 
-        $data = $json['data'];
-        if (!isset($data['uid'])  || !is_string($data['uid'])  || !UUID::isValid($data['uid']) ||
-            !isset($data['mail']) || !is_string($data['mail']) || filter_var($data['mail'], FILTER_VALIDATE_EMAIL) === false) {
-            throw new APIException("Unexpected error: status is ok, but cannot get user id and/or mail");
-        }
-
-        $shippingAddress = null;
-        $billingAddress = null;
-        if (null !== $this->rsaInstance && isset($data['addresses'])) {
-            $addresses = Crypto::verifySignatureAndDecrypt($data['addresses'], $this->rsaInstance);
-
-            if (isset($addresses['shipping_address'])) {
-                $shippingAddress = BaseAddress::build($addresses['shipping_address']);
-            }
-
-            if (isset($addresses['billing_address'])) {
-                $billingAddress = BaseAddress::build($addresses['billing_address']);
-            }
-        }
-
-        return new User($data['uid'], $data['mail'], $shippingAddress, $billingAddress);
+        return new Data($json['data']);
     }
 
+    /**
+     * @param string $sessionName
+     * @throws Exception\SessionNotStartedException
+     * @throws IllegalArgumentException
+     */
     public static function generateSessionStateParameter($sessionName = self::DEFAULT_COOKIE_NAME) {
         Session::set($sessionName, Random::token());
     }
 
+    /**
+     * @param string $sessionName
+     * @return bool
+     * @throws Exception\SessionNotStartedException
+     * @throws IllegalArgumentException
+     */
     public static function isSessionStateParameterGenerated($sessionName = self::DEFAULT_COOKIE_NAME) {
         return Session::get($sessionName) !== null;
     }
 
+    /**
+     * @param $stateValue
+     * @param string $sessionName
+     * @return bool
+     * @throws Exception\SessionNotStartedException
+     * @throws IllegalArgumentException
+     */
     public static function verifySessionStateParameter($stateValue, $sessionName = self::DEFAULT_COOKIE_NAME) {
         return Session::get($sessionName) === $stateValue;
     }
 
+    /**
+     * @param $stateValue
+     * @param string $sessionName
+     * @return bool
+     * @throws Exception\SessionNotStartedException
+     * @throws IllegalArgumentException
+     */
     public static function verifyAndRemoveSessionStateParameter($stateValue, $sessionName = self::DEFAULT_COOKIE_NAME) {
         $result = Session::get($sessionName) === $stateValue;
         Session::remove($sessionName);

@@ -10,6 +10,11 @@ use Skeerel\Exception\IllegalArgumentException;
 
 class Random {
 
+    /**
+     * @param int $length
+     * @return string
+     * @throws IllegalArgumentException
+     */
     public static function token($length = 40){
         if(!is_int($length) || intval($length) <= 8) {
             throw new IllegalArgumentException("length must be an integer value > 8");
