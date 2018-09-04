@@ -19,8 +19,16 @@ abstract class Color
      * @return null|string
      */
     public static function fromString($value) {
-        if (strcasecmp($value, Currency::EUR) === 0) {
-            return Currency::EUR;
+        if (strcasecmp($value, Color::GREEN) === 0) {
+            return Color::GREEN;
+        }
+
+        if (strcasecmp($value, Color::ORANGE) === 0) {
+            return Color::ORANGE;
+        }
+
+        if (strcasecmp($value, Color::RED) === 0) {
+            return Color::RED;
         }
 
         return null;
