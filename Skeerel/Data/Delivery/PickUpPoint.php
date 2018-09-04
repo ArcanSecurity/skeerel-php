@@ -7,6 +7,7 @@ namespace Skeerel\Data\Delivery;
 
 
 use Skeerel\Data\Address\Country;
+use Skeerel\Exception\IllegalArgumentException;
 
 class PickUpPoint implements \JsonSerializable
 {
@@ -51,7 +52,7 @@ class PickUpPoint implements \JsonSerializable
     private $deliveryTextContent;
 
     /**
-     * @var Color
+     * @var string
      */
     private $deliveryTextColor;
 
@@ -61,44 +62,113 @@ class PickUpPoint implements \JsonSerializable
     private $price;
 
     /**
-     * @var Color
+     * @var string
      */
     private $priceTextColor;
 
     /**
      * PickUpPoint constructor.
-     * @param string $id
-     * @param string $name
-     * @param string $address
-     * @param string $zipCode
-     * @param string $city
-     * @param Country $country
-     * @param bool $primary
-     * @param string $deliveryTextContent
-     * @param Color $deliveryTextColor
-     * @param int $price
-     * @param Color $priceTextColor
      */
-    function __construct($id, $name, $address, $zipCode, $city, Country $country, $primary = false,
-                         $deliveryTextContent = null, $deliveryTextColor = null, $price = 0, $priceTextColor = null) {
+    public function __construct(){
+        $this->primary = false;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId($id) {
         $this->id = $id;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
         $this->name = $name;
-        $this->address = $address;
-        $this->zipCode = $zipCode;
-        $this->city = $city;
-        $this->country = $country;
+    }
+
+    /**
+     * @param bool $primary
+     */
+    public function setPrimary($primary) {
         $this->primary = $primary;
+    }
+
+    /**
+     * @param string $address
+     */
+    public function setAddress($address) {
+        $this->address = $address;
+    }
+
+    /**
+     * @param string $zipCode
+     */
+    public function setZipCode($zipCode) {
+        $this->zipCode = $zipCode;
+    }
+
+    /**
+     * @param string $city
+     */
+    public function setCity($city) {
+        $this->city = $city;
+    }
+
+    /**
+     * @param Country $country
+     */
+    public function setCountry(Country $country) {
+        $this->country = $country;
+    }
+
+    /**
+     * @param string $deliveryTextContent
+     */
+    public function setDeliveryTextContent($deliveryTextContent) {
         $this->deliveryTextContent = $deliveryTextContent;
+    }
+
+    /**
+     * @param string $deliveryTextColor
+     * @throws IllegalArgumentException
+     */
+    public function setDeliveryTextColor($deliveryTextColor) {
+        if (Color::fromString($deliveryTextColor) === null) {
+            throw new IllegalArgumentException("This color is not allowed");
+        }
         $this->deliveryTextColor = $deliveryTextColor;
+    }
+
+    /**
+     * @param int $price
+     */
+    public function setPrice($price) {
         $this->price = $price;
+    }
+
+    /**
+     * @param string $priceTextColor
+     * @throws IllegalArgumentException
+     */
+    public function setPriceTextColor($priceTextColor) {
+        if (Color::fromString($priceTextColor) === null) {
+            throw new IllegalArgumentException("This color is not allowed");
+        }
         $this->priceTextColor = $priceTextColor;
     }
 
 
     /**
      * @return array
+     * @throws IllegalArgumentException
      */
     public function jsonSerialize() {
+        if ($this->id === null || $this->primary === null || $this->name === null || $this->address === null
+            || $this->zipCode === null || $this->city === null || $this->country === null) {
+            throw new IllegalArgumentException("Not all mandatory fields are set");
+        }
+
         $result = array(
             "id" => $this->id,
             "name" => $this->name,
@@ -128,6 +198,7 @@ class PickUpPoint implements \JsonSerializable
 
     /**
      * @return string
+     * @throws IllegalArgumentException
      */
     public function toJson() {
         return json_encode($this->jsonSerialize());

@@ -41,45 +41,87 @@ class DeliveryMethod implements \JsonSerializable
     private $price;
 
     /**
-     * @var Color
+     * @var string
      */
     private $pickUpPoints;
 
 
     /**
      * DeliveryMethod constructor.
-     * @param string $id
-     * @param string $type
-     * @param string $name
-     * @param string $deliveryTextContent
-     * @param int $price
-     * @param bool $primary
-     * @param null|PickUpPoints $pickUpPoints
-     * @throws IllegalArgumentException
      */
-    function __construct($id, $type, $name, $deliveryTextContent, $price, $primary = false, $pickUpPoints = null) {
-        $this->id = $id;
-        $this->type = $type;
-        $this->primary = $primary;
-        $this->name = $name;
-        $this->deliveryTextContent = $deliveryTextContent;
-        $this->price = $price;
-
-        if ($this->type === Type::HOME && $pickUpPoints !== null) {
-            throw new IllegalArgumentException("Home delivery cannot have pick up points");
-        }
-
-        if ($this->type !== Type::HOME && ($pickUpPoints === null || $pickUpPoints->isEmpty())) {
-            throw new IllegalArgumentException("$this->type must have pick up points");
-        }
-
-        $this->pickUpPoints = $pickUpPoints;
+    function __construct() {
+        $this->primary = false;
     }
 
     /**
+     * @param string $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type) {
+        $this->type = $type;
+    }
+
+    /**
+     * @param bool $primary
+     */
+    public function setPrimary($primary) {
+        $this->primary = $primary;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    /**
+     * @param string $deliveryTextContent
+     */
+    public function setDeliveryTextContent($deliveryTextContent) {
+        $this->deliveryTextContent = $deliveryTextContent;
+    }
+
+    /**
+     * @param int $price
+     */
+    public function setPrice($price) {
+        $this->price = $price;
+    }
+
+    /**
+     * @param string $pickUpPoints
+     */
+    public function setPickUpPoints($pickUpPoints) {
+        $this->pickUpPoints = $pickUpPoints;
+    }
+
+
+
+    /**
      * @return array
+     * @throws IllegalArgumentException
      */
     public function jsonSerialize() {
+        if ($this->id === null || $this->type === null || $this->primary === null || $this->name === null
+            || $this->deliveryTextContent === null || $this->price === null) {
+            throw new IllegalArgumentException("Not all mandatory fields are set");
+        }
+
+        if ($this->type === Type::HOME && $this->pickUpPoints !== null) {
+            throw new IllegalArgumentException("Home delivery cannot have pick up points");
+        }
+
+        if ($this->type !== Type::HOME && ($this->pickUpPoints === null || $this->pickUpPoints->isEmpty())) {
+            throw new IllegalArgumentException("$this->type must have pick up points");
+        }
+
         $result = array(
             "id" => $this->id,
             "type" => $this->type,
@@ -98,6 +140,7 @@ class DeliveryMethod implements \JsonSerializable
 
     /**
      * @return string
+     * @throws IllegalArgumentException
      */
     public function toJson() {
         return json_encode($this->jsonSerialize());
