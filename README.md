@@ -217,11 +217,6 @@ if (\Skeerel\Skeerel::verifyAndRemoveSessionStateParameter($_GET['state'])) {
 For more information about getting user information, you can look
 at the classes under the `Skeerel/Data` directory.
 
-*N.B: since addresses are end-to-end encrypted, we cannot verify them.
-While we do our best to verify them in this library, we cannot certify
-their veracity. You still have to protect these values against SQL 
-injection, XSS, ...*
-
 # Sample App
 
 If you'd like to see an example of this library in action, 
