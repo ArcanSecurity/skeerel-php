@@ -37,7 +37,7 @@ class Payment
     private $captured;
 
     /**
-     * @var string
+     * @var ReasonNotCaptured
      */
     private $reasonNotCaptured;
 
@@ -92,7 +92,7 @@ class Payment
         }
 
         if (isset($data['reason_not_captured']) && is_string($data['reason_not_captured'])) {
-            $this->reasonNotCaptured = $data['reason_not_captured'];
+            $this->reasonNotCaptured = ReasonNotCaptured::fromStrValue($data['reason_not_captured'], true);
         }
 
         if (isset($data['fraud_risk']) && is_string($data['fraud_risk'])) {
