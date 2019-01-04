@@ -52,7 +52,7 @@ class PickUpPoint implements \JsonSerializable
     private $deliveryTextContent;
 
     /**
-     * @var string
+     * @var Color
      */
     private $deliveryTextColor;
 
@@ -62,7 +62,7 @@ class PickUpPoint implements \JsonSerializable
     private $price;
 
     /**
-     * @var string
+     * @var Color
      */
     private $priceTextColor;
 
@@ -130,13 +130,9 @@ class PickUpPoint implements \JsonSerializable
     }
 
     /**
-     * @param string $deliveryTextColor
-     * @throws IllegalArgumentException
+     * @param Color $deliveryTextColor
      */
-    public function setDeliveryTextColor($deliveryTextColor) {
-        if (Color::fromString($deliveryTextColor) === null) {
-            throw new IllegalArgumentException("This color is not allowed");
-        }
+    public function setDeliveryTextColor(Color $deliveryTextColor) {
         $this->deliveryTextColor = $deliveryTextColor;
     }
 
@@ -148,13 +144,9 @@ class PickUpPoint implements \JsonSerializable
     }
 
     /**
-     * @param string $priceTextColor
-     * @throws IllegalArgumentException
+     * @param Color $priceTextColor
      */
-    public function setPriceTextColor($priceTextColor) {
-        if (Color::fromString($priceTextColor) === null) {
-            throw new IllegalArgumentException("This color is not allowed");
-        }
+    public function setPriceTextColor(Color $priceTextColor) {
         $this->priceTextColor = $priceTextColor;
     }
 
@@ -182,14 +174,14 @@ class PickUpPoint implements \JsonSerializable
         if ($this->deliveryTextContent != null) {
             $result['delivery_text_content'] = $this->deliveryTextContent;
             if ($this->deliveryTextColor != null) {
-                $result['delivery_text_color'] = $this->deliveryTextColor;
+                $result['delivery_text_color'] = $this->deliveryTextColor->getValue();
             }
         }
 
         if ($this->price != null && $this->price > 0) {
             $result['price'] = $this->price;
             if ($this->priceTextColor != null) {
-                $result['price_text_color'] = $this->priceTextColor;
+                $result['price_text_color'] = $this->priceTextColor->getValue();
             }
         }
 

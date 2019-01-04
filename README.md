@@ -93,7 +93,7 @@ To format delivery methods, we recommend that you use our embedded method:
 // A standard delivery mode
 $deliveryMethodStandard = new DeliveryMethod();
 $deliveryMethodStandard->setId("standard");
-$deliveryMethodStandard->setType(Type::HOME);
+$deliveryMethodStandard->setType(Type::HOME());
 $deliveryMethodStandard->setPrimary(true);
 $deliveryMethodStandard->setName("Standard shipping");
 $deliveryMethodStandard->setDeliveryTextContent("in 3 days");
@@ -104,7 +104,7 @@ $deliveryMethodStandard->setPrice(499);
 // But also a pick up mode
 $deliveryMethodRelay = new DeliveryMethod();
 $deliveryMethodRelay->setId("my_relay");
-$deliveryMethodRelay->setType(Type::RELAY);
+$deliveryMethodRelay->setType(Type::RELAY());
 $deliveryMethodRelay->setName("Pick-up & go");
 $deliveryMethodRelay->setDeliveryTextContent($dateTwoDays);
 $deliveryMethodRelay->setPrice(299);
@@ -118,9 +118,9 @@ $pickUpPoint1->setZipCode($zip);
 $pickUpPoint1->setCity($city);
 $pickUpPoint1->setCountry($country);
 $pickUpPoint1->setDeliveryTextContent("tomorrow");
-$pickUpPoint1->setDeliveryTextColor(Color::GREEN);
+$pickUpPoint1->setDeliveryTextColor(Color::GREEN());
 $pickUpPoint1->setPrice(399);
-$pickUpPoint1->setPriceTextColor(Color::RED);
+$pickUpPoint1->setPriceTextColor(Color::RED());
 
 $pickUpPoint2 = new PickUpPoint();
 $pickUpPoint2->setId("2");
@@ -151,7 +151,7 @@ $deliveryMethodRelay->setPickUpPoints($pickUpPointsRelay);
 // And why not getting the order directly in the store
 $deliveryMethodCollect = new DeliveryMethod();
 $deliveryMethodCollect->setId("store_collect");
-$deliveryMethodCollect->setType(Type::COLLECT);
+$deliveryMethodCollect->setType(Type::COLLECT());
 $deliveryMethodCollect->setName("Clic & collect");
 $deliveryMethodCollect->setDeliveryTextContent("in two hours");
 $deliveryMethodCollect->setPrice(0);
@@ -210,7 +210,7 @@ following lines
 // Verify that the state parameter is the same
 if (\Skeerel\Skeerel::verifyAndRemoveSessionStateParameter($_GET['state'])) {
     $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET', 'YOUR_RSA_PRIVATE_KEY');
-    $user = $skeerel->getData($_GET['token']);
+    $data = $skeerel->getData($_GET['token']);
 }
 ```
 

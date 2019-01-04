@@ -16,7 +16,7 @@ class DeliveryMethod implements \JsonSerializable
     private $id;
 
     /**
-     * @var string
+     * @var Type
      */
     private $type;
 
@@ -41,7 +41,7 @@ class DeliveryMethod implements \JsonSerializable
     private $price;
 
     /**
-     * @var string
+     * @var PickUpPoints
      */
     private $pickUpPoints;
 
@@ -61,9 +61,9 @@ class DeliveryMethod implements \JsonSerializable
     }
 
     /**
-     * @param string $type
+     * @param Type $type
      */
-    public function setType($type) {
+    public function setType(Type $type) {
         $this->type = $type;
     }
 
@@ -96,9 +96,9 @@ class DeliveryMethod implements \JsonSerializable
     }
 
     /**
-     * @param string $pickUpPoints
+     * @param PickUpPoints $pickUpPoints
      */
-    public function setPickUpPoints($pickUpPoints) {
+    public function setPickUpPoints(PickUpPoints $pickUpPoints) {
         $this->pickUpPoints = $pickUpPoints;
     }
 
@@ -124,7 +124,7 @@ class DeliveryMethod implements \JsonSerializable
 
         $result = array(
             "id" => $this->id,
-            "type" => $this->type,
+            "type" => $this->type->getValue(),
             "primary" => $this->primary,
             "name" => $this->name,
             "delivery_text_content" => $this->deliveryTextContent,

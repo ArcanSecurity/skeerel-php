@@ -6,6 +6,7 @@
 namespace Skeerel\Data\Delivery;
 
 
+use Skeerel\Data\Address\BaseAddress;
 use Skeerel\Exception\IllegalArgumentException;
 
 class Delivery
@@ -14,6 +15,11 @@ class Delivery
      * @var string
      */
     private $methodId;
+
+    /**
+     * @var BaseAddress
+     */
+    private $shippingAddress;
 
     /**
      * @var string
@@ -34,6 +40,10 @@ class Delivery
             $this->methodId = $data['method_id'];
         }
 
+        if (isset($data['shipping_address'])) {
+            $this->shippingAddress = BaseAddress::build($data['shipping_address']);
+        }
+
         if (isset($data['pick_up_point_id']) && is_string($data['pick_up_point_id'])) {
             $this->pickUpPointId = $data['pick_up_point_id'];
         }
@@ -44,6 +54,13 @@ class Delivery
      */
     public function getMethodId() {
         return $this->methodId;
+    }
+
+    /**
+     * @return BaseAddress
+     */
+    public function getShippingAddress() {
+        return $this->shippingAddress;
     }
 
     /**
@@ -59,6 +76,7 @@ class Delivery
         return
             "{\n" .
             "\t methodId => $this->methodId,\n" .
+            "\t shippingAddress => $this->shippingAddress,\n" .
             "\t pickUpPointId => $this->pickUpPointId,\n" .
             "}";
     }

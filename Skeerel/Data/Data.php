@@ -7,7 +7,7 @@ namespace Skeerel\Data;
 
 
 use Skeerel\Data\Delivery\Delivery;
-use Skeerel\Data\Transaction\Transaction;
+use Skeerel\Data\Payment\Payment;
 use Skeerel\Exception\IllegalArgumentException;
 
 class Data
@@ -23,9 +23,9 @@ class Data
     private $delivery;
 
     /**
-     * @var Transaction
+     * @var Payment
      */
-    private $transaction;
+    private $payment;
 
     /**
      * User constructor.
@@ -39,12 +39,12 @@ class Data
 
         $this->user = new User($data['user']);
 
-        if (isset($data['delivery'])) {
-            $this->delivery = $data['delivery'];
-        }
+        if (isset($data['payment'])) {
+            $this->payment = new Payment($data['payment']);
 
-        if (isset($data['transaction'])) {
-            $this->transaction = $data['transaction'];
+            if (isset($data['delivery'])) {
+                $this->delivery = new Delivery($data['delivery']);
+            }
         }
     }
 
@@ -63,10 +63,10 @@ class Data
     }
 
     /**
-     * @return Transaction
+     * @return Payment
      */
-    public function getTransaction() {
-        return $this->transaction;
+    public function getPayment() {
+        return $this->payment;
     }
 
     /**
@@ -77,7 +77,7 @@ class Data
         "{\n" .
             "\t user => $this->user,\n" .
             "\t delivery => $this->delivery,\n" .
-            "\t transaction => $this->transaction,\n" .
+            "\t payment => $this->payment,\n" .
         "}";
     }
 }
