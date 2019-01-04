@@ -84,7 +84,7 @@ class Payment
         }
 
         if (isset($data['currency']) && is_string($data['currency'])) {
-            $this->currency = Currency::fromValue($data['currency']);
+            $this->currency = Currency::fromStrValue($data['currency'], true);
         }
 
         if (isset($data['captured']) && is_bool($data['captured'])) {
@@ -96,7 +96,7 @@ class Payment
         }
 
         if (isset($data['fraud_risk']) && is_string($data['fraud_risk'])) {
-            $this->fraudRisk = FraudRisk::fromValue($data['fraud_risk']);
+            $this->fraudRisk = FraudRisk::fromStrValue($data['fraud_risk'], true);
         }
 
         if (isset($data['billing_address'])) {

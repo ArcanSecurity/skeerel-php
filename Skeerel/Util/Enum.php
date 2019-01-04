@@ -213,6 +213,31 @@ abstract class Enum implements \JsonSerializable
 
         return null;
     }
+
+    /**
+     * Returns Enum by value
+     *
+     * @param string $value
+     * @param bool $caseInsensitive
+     * @return static
+     */
+    public static function fromStrValue($value, $caseInsensitive = false)
+    {
+        foreach (static::values() as $key => $enumInstance) {
+            if (is_string($enumInstance->getValue())) {
+                if (!$caseInsensitive && $enumInstance->getValue() === $value) {
+                    return $enumInstance;
+                }
+
+                if ($caseInsensitive && strcasecmp($enumInstance->getValue(), $value === 0)) {
+                    return $enumInstance;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Returns Enum by key
      *
