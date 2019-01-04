@@ -90,8 +90,12 @@ class DeliveryMethod implements \JsonSerializable
 
     /**
      * @param int $price
+     * @throws IllegalArgumentException
      */
     public function setPrice($price) {
+        if ($price < 0) {
+            throw new IllegalArgumentException("Cannot set a price lower than 0");
+        }
         $this->price = $price;
     }
 
