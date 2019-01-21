@@ -45,14 +45,14 @@ The following line will do the job for you
 \Skeerel\Skeerel::generateSessionStateParameter();
 
 // Eventually, you can set the name of the session
-\Skeerel\Skeerel::generateSessionStateParameter("my_custom_session_name);
+\Skeerel\Skeerel::generateSessionStateParameter("my_custom_session_name");
 ```
 
 ### Show the button
 
 In order to connect or pay, a user must clic on the Skeerel button.
 
-It's quite simple to insert the button in your page. Just paste this
+It's quite simple to insert the button on your page. Just paste this
 code where you want the button to appear
 ```html
     <script type="text/javascript" src="https://api.skeerel.com/assets/v2/javascript/api.min.js"
@@ -63,7 +63,7 @@ code where you want the button to appear
         data-need-shipping-address="" // in case you need a shipping address
         data-need-billing-address="" // in case you need a billing address
         data-delivery-methods-url="https://site.com/delivery_methods.php?user=__USER__&zip_code=__ZIP_CODE__&city=__CITY__&country=__COUNTRY__" // If you need to ship something to the user
-        data-payment="" // If the session is for the user to pay
+        data-checkout="" // If the session is for the user to pay
         data-payment-test="" // If the payment must be done in test mode
         data-amount="1000" // Amount is in the smallest common currency unit. For instance here 10,00€ 10.00USD, ¥1000
         data-currency="eur" // The currency of the transaction></script>
@@ -73,7 +73,7 @@ code where you want the button to appear
 
 When a user pays with Skeerel, it's likely that you will have to ship its order.
 In that case, just set the url that Skeerel should call to get your delivery methods 
-in your `data-delivery-methods-url parameter`. For instance:
+in your `data-delivery-methods-url` parameter. For instance:
 ```
 https://site.com/path/to/delivery/methods_
 https://site.com/path/to/delivery/methods?uid=__USER___
@@ -96,7 +96,7 @@ $deliveryMethodStandard->setId("standard");
 $deliveryMethodStandard->setType(Type::HOME());
 $deliveryMethodStandard->setPrimary(true);
 $deliveryMethodStandard->setName("Standard shipping");
-$deliveryMethodStandard->setDeliveryTextContent("in 3 days");
+$deliveryMethodStandard->setDeliveryTextContent("delivery in 3 days");
 $deliveryMethodStandard->setPrice(499);
 
 
@@ -106,7 +106,7 @@ $deliveryMethodRelay = new DeliveryMethod();
 $deliveryMethodRelay->setId("my_relay");
 $deliveryMethodRelay->setType(Type::RELAY());
 $deliveryMethodRelay->setName("Pick-up & go");
-$deliveryMethodRelay->setDeliveryTextContent($dateTwoDays);
+$deliveryMethodRelay->setDeliveryTextContent("Deliver on $dateTwoDays");
 $deliveryMethodRelay->setPrice(299);
 
 // Pick up points
@@ -153,10 +153,10 @@ $deliveryMethodCollect = new DeliveryMethod();
 $deliveryMethodCollect->setId("store_collect");
 $deliveryMethodCollect->setType(Type::COLLECT());
 $deliveryMethodCollect->setName("Clic & collect");
-$deliveryMethodCollect->setDeliveryTextContent("in two hours");
+$deliveryMethodCollect->setDeliveryTextContent("Available in two hours");
 $deliveryMethodCollect->setPrice(0);
 
-// Collect up points
+// Collect points
 $collectPoint1 = new PickUpPoint();
 $collectPoint1->setId("1");
 $collectPoint1->setName("Store 1");
@@ -209,13 +209,33 @@ following lines
 ```php
 // Verify that the state parameter is the same
 if (\Skeerel\Skeerel::verifyAndRemoveSessionStateParameter($_GET['state'])) {
-    $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET', 'YOUR_RSA_PRIVATE_KEY');
+    $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
     $data = $skeerel->getData($_GET['token']);
 }
 ```
 
 For more information about getting user information, you can look
 at the classes under the `Skeerel/Data` directory.
+
+### Get details of a payment
+
+```php
+$skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
+$payment = $skeerel->getPayment("ce365eec-c287-43b6-ad38-25d8d9029fd1");
+```
+
+### List payments
+
+Payments are ordered by date DESC. Last payment appears first
+
+```php
+$skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
+$payment = $skeerel->listPayments(); // last ten payments
+$payment = $skeerel->listPayments(true); // only live payments
+$payment = $skeerel->listPayments(true, 15, 20); // list twenty payments starting from the fifteenth index
+```
+
+### Refund payment
 
 # Sample App
 

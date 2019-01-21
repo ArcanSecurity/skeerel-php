@@ -73,11 +73,22 @@ class Delivery
 
 
     public function __toString() {
+        return $this->toString();
+    }
+
+    /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab = str_repeat("\t", $level);
+        $tab2 = str_repeat("\t", $level-1);
+
         return
             "{\n" .
-            "\t methodId => $this->methodId,\n" .
-            "\t shippingAddress => $this->shippingAddress,\n" .
-            "\t pickUpPointId => $this->pickUpPointId,\n" .
-            "}";
+                $tab . "methodId => $this->methodId,\n" .
+                $tab . "shippingAddress => " . ($this->shippingAddress != null ? $this->shippingAddress->toString($level+1) : "") . ",\n" .
+                $tab . "pickUpPointId => $this->pickUpPointId,\n" .
+            $tab2 . "}";
     }
 }

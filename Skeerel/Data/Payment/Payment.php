@@ -6,7 +6,7 @@
 namespace Skeerel\Data\Payment;
 
 
-use Skeerel\Data\Address\BaseAddress;
+use DateTime;
 use Skeerel\Exception\IllegalArgumentException;
 
 class Payment
@@ -17,9 +17,14 @@ class Payment
     private $id;
 
     /**
-     * @var bool
+     * @var DateTime
      */
-    private $live;
+    private $date;
+
+    /**
+     * @var string
+     */
+    private $profileId;
 
     /**
      * @var int
@@ -32,34 +37,44 @@ class Payment
     private $currency;
 
     /**
+     * @var string
+     */
+    private $status;
+
+    /**
+     * @var bool
+     */
+    private $live;
+
+    /**
      * @var bool
      */
     private $captured;
 
     /**
-     * @var ReasonNotCaptured
+     * @var DateTime
      */
-    private $reasonNotCaptured;
+    private $dateCaptured;
 
     /**
-     * @var FraudRisk
+     * @var bool
      */
-    private $fraudRisk;
+    private $refunded;
 
     /**
-     * @var BaseAddress
+     * @var DateTime
      */
-    private $billingAddress;
+    private $dateRefunded;
 
     /**
-     * @var int
+     * @var bool
      */
-    private $paymentErrorCode;
+    private $reviewed;
 
     /**
-     * @var string
+     * @var DateTime
      */
-    private $paymentErrorMessage;
+    private $dateReviewed;
 
     /**
      * Payment constructor.
@@ -75,8 +90,12 @@ class Payment
             $this->id = $data['id'];
         }
 
-        if (isset($data['live']) && is_bool($data['live'])) {
-            $this->live = $data['live'];
+        if (isset($data['date']) && is_string($data['date'])) {
+            $this->date = new DateTime(str_replace("[UTC]", "", $data['date']));
+        }
+
+        if (isset($data['profile_id']) && is_string($data['profile_id'])) {
+            $this->profileId = $data['profile_id'];
         }
 
         if (isset($data['amount']) && is_int($data['amount'])) {
@@ -87,124 +106,277 @@ class Payment
             $this->currency = Currency::fromStrValue($data['currency'], true);
         }
 
+        if (isset($data['status']) && is_string($data['status'])) {
+            $this->status = Status::fromStrValue($data['status'], true);
+        }
+
+        if (isset($data['live']) && is_bool($data['live'])) {
+            $this->live = $data['live'];
+        }
+
         if (isset($data['captured']) && is_bool($data['captured'])) {
             $this->captured = $data['captured'];
         }
 
-        if (isset($data['reason_not_captured']) && is_string($data['reason_not_captured'])) {
-            $this->reasonNotCaptured = ReasonNotCaptured::fromStrValue($data['reason_not_captured'], true);
+        if (isset($data['date_captured']) && is_string($data['date_captured'])) {
+            $this->dateCaptured = new DateTime(str_replace("[UTC]", "", $data['date_captured']));
         }
 
-        if (isset($data['fraud_risk']) && is_string($data['fraud_risk'])) {
-            $this->fraudRisk = FraudRisk::fromStrValue($data['fraud_risk'], true);
+        if (isset($data['refunded']) && is_bool($data['refunded'])) {
+            $this->refunded = $data['refunded'];
         }
 
-        if (isset($data['billing_address'])) {
-            $this->billingAddress = BaseAddress::build($data['billing_address']);
+        if (isset($data['date_refunded']) && is_string($data['date_refunded'])) {
+            $this->dateRefunded = new DateTime(str_replace("[UTC]", "", $data['date_refunded']));
         }
 
-        if (isset($data['payment_error_code']) && is_int($data['payment_error_code'])) {
-            $this->paymentErrorCode = $data['payment_error_code'];
+        if (isset($data['reviewed']) && is_bool($data['reviewed'])) {
+            $this->reviewed = $data['reviewed'];
         }
 
-        if (isset($data['payment_error_message']) && is_string($data['payment_error_message'])) {
-            $this->paymentErrorMessage = $data['payment_error_message'];
+        if (isset($data['date_reviewed']) && is_string($data['date_reviewed'])) {
+            $this->dateReviewed = new DateTime(str_replace("[UTC]", "", $data['date_reviewed']));
         }
     }
 
     /**
      * @return string
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * @return bool
+     * @param string $id
      */
-    public function isLive() {
-        return $this->live;
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param DateTime $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProfileId()
+    {
+        return $this->profileId;
+    }
+
+    /**
+     * @param string $profileId
+     */
+    public function setProfileId($profileId)
+    {
+        $this->profileId = $profileId;
     }
 
     /**
      * @return int
      */
-    public function getAmount() {
+    public function getAmount()
+    {
         return $this->amount;
+    }
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
     }
 
     /**
      * @return Currency
      */
-    public function getCurrency() {
+    public function getCurrency()
+    {
         return $this->currency;
     }
 
     /**
+     * @param Currency $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
      * @return bool
      */
-    public function isCaptured() {
+    public function isLive()
+    {
+        return $this->live;
+    }
+
+    /**
+     * @param bool $live
+     */
+    public function setLive($live)
+    {
+        $this->live = $live;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCaptured()
+    {
         return $this->captured;
     }
 
     /**
-     * @return string
+     * @param bool $captured
      */
-    public function getReasonNotCaptured() {
-        return $this->reasonNotCaptured;
+    public function setCaptured($captured)
+    {
+        $this->captured = $captured;
     }
 
     /**
-     * @return FraudRisk
+     * @return DateTime
      */
-    public function getFraudRisk() {
-        return $this->fraudRisk;
+    public function getDateCaptured()
+    {
+        return $this->dateCaptured;
     }
 
     /**
-     * @return BaseAddress
+     * @param DateTime $dateCaptured
      */
-    public function getBillingAddress() {
-        return $this->billingAddress;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaymentErrorCode() {
-        return $this->paymentErrorCode;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentErrorMessage() {
-        return $this->paymentErrorMessage;
+    public function setDateCaptured($dateCaptured)
+    {
+        $this->dateCaptured = $dateCaptured;
     }
 
     /**
      * @return bool
      */
-    public function isError() {
-        return $this->paymentErrorCode != null || $this->paymentErrorMessage != null;
+    public function isRefunded()
+    {
+        return $this->refunded;
+    }
+
+    /**
+     * @param bool $refunded
+     */
+    public function setRefunded($refunded)
+    {
+        $this->refunded = $refunded;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateRefunded()
+    {
+        return $this->dateRefunded;
+    }
+
+    /**
+     * @param DateTime $dateRefunded
+     */
+    public function setDateRefunded($dateRefunded)
+    {
+        $this->dateRefunded = $dateRefunded;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReviewed()
+    {
+        return $this->reviewed;
+    }
+
+    /**
+     * @param bool $reviewed
+     */
+    public function setReviewed($reviewed)
+    {
+        $this->reviewed = $reviewed;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateReviewed()
+    {
+        return $this->dateReviewed;
+    }
+
+    /**
+     * @param DateTime $dateReviewed
+     */
+    public function setDateReviewed($dateReviewed)
+    {
+        $this->dateReviewed = $dateReviewed;
     }
 
     /**
      * @return string
      */
     public function __toString() {
+        return $this->toString();
+    }
+
+    /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab = str_repeat("\t", $level);
+        $tab2 = str_repeat("\t", $level-1);
+
         return
             "{\n" .
-            "\t id => $this->id,\n" .
-            "\t live => $this->live,\n" .
-            "\t amountPaid => $this->amount,\n" .
-            "\t currency => $this->currency,\n" .
-            "\t captured => $this->captured,\n" .
-            "\t fraudRisk => $this->fraudRisk,\n" .
-            "\t billingAddress => $this->billingAddress\n" .
-            "\t reasonNotCaptured => $this->reasonNotCaptured,\n" .
-            "\t paymentErrorCode => $this->paymentErrorCode,\n" .
-            "\t paymentErrorMessage => $this->paymentErrorMessage,\n" .
-            "}";
+                $tab . "id => $this->id,\n" .
+                $tab . "date => " . $this->date->format(DateTime::ISO8601) . ",\n" .
+                $tab . "profile_id => $this->profileId,\n" .
+                $tab . "amount => $this->amount,\n" .
+                $tab . "currency => $this->currency,\n" .
+                $tab . "status => $this->status,\n" .
+                $tab . "live => $this->live,\n" .
+                $tab . "captured => $this->captured,\n" .
+                $tab . "date_captured => " . ($this->dateCaptured !== null ? $this->dateCaptured->format(DateTime::ISO8601) : "") . ",\n" .
+                $tab . "refunded => $this->refunded,\n" .
+                $tab . "date_refunded => " . ($this->dateRefunded !== null ? $this->dateRefunded->format(DateTime::ISO8601) : "") . ",\n" .
+                $tab . "reviewed => $this->reviewed,\n" .
+                $tab . "date_reviewed => " . ($this->dateReviewed !== null ? $this->dateReviewed->format(DateTime::ISO8601) : "") . ",\n" .
+            $tab2 . "}";
     }
 }

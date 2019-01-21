@@ -16,7 +16,7 @@ use Skeerel\Util\Enum;
  * @method static Color ORANGE()
  * @method static Color RED()
  */
-abstract class Color extends Enum
+class Color extends Enum
 {
     const GREEN = "green";
 

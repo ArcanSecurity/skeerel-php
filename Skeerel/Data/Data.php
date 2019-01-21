@@ -7,7 +7,7 @@ namespace Skeerel\Data;
 
 
 use Skeerel\Data\Delivery\Delivery;
-use Skeerel\Data\Payment\Payment;
+use Skeerel\Data\Payment\PaymentData;
 use Skeerel\Exception\IllegalArgumentException;
 
 class Data
@@ -23,7 +23,7 @@ class Data
     private $delivery;
 
     /**
-     * @var Payment
+     * @var PaymentData
      */
     private $payment;
 
@@ -40,7 +40,7 @@ class Data
         $this->user = new User($data['user']);
 
         if (isset($data['payment'])) {
-            $this->payment = new Payment($data['payment']);
+            $this->payment = new PaymentData($data['payment']);
 
             if (isset($data['delivery'])) {
                 $this->delivery = new Delivery($data['delivery']);
@@ -63,7 +63,7 @@ class Data
     }
 
     /**
-     * @return Payment
+     * @return PaymentData
      */
     public function getPayment() {
         return $this->payment;
@@ -73,11 +73,21 @@ class Data
      * @return string
      */
     public function __toString() {
+        return $this->toString();
+    }
+
+    /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab = str_repeat("\t", $level);
+        $tab2 = str_repeat("\t", $level-1);
         return
-        "{\n" .
-            "\t user => $this->user,\n" .
-            "\t delivery => $this->delivery,\n" .
-            "\t payment => $this->payment,\n" .
-        "}";
+            "{\n" .
+                $tab . "user => " . $this->user->toString($level+1) . ",\n" .
+                $tab . "delivery => " . ($this->delivery !== null ? $this->delivery->toString($level+1) : "") .",\n" .
+                $tab . "payment => " . ($this->payment !== null ? $this->payment->toString($level+1) : "") . ",\n" .
+            $tab2 . "}";
     }
 }

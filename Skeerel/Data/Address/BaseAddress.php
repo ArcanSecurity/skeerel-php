@@ -227,6 +227,24 @@ abstract class BaseAddress
     }
 
     /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab = str_repeat("\t", $level);
+
+        return
+            $tab . "name => $this->name,\n" .
+            $tab . "address => $this->address,\n" .
+            $tab . "addressLine2 => $this->addressLine2,\n" .
+            $tab . "addressLine3 => $this->addressLine3,\n" .
+            $tab . "zipCode => $this->zipCode,\n" .
+            $tab . "city => $this->city,\n" .
+            $tab . "country => $this->country,\n" .
+            $tab . "phone => $this->phone";
+    }
+
+    /**
      * @param $address
      * @return CompanyAddress|IndividualAddress
      * @throws IllegalArgumentException

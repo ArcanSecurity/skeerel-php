@@ -13,7 +13,7 @@ use Skeerel\Util\Enum;
  *
  * @method static Currency EUR()
  */
-abstract class Currency extends Enum
+class Currency extends Enum
 {
     const EUR = "EUR";
 }

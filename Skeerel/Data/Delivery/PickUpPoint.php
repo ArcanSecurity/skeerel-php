@@ -195,4 +195,34 @@ class PickUpPoint implements \JsonSerializable
     public function toJson() {
         return json_encode($this->jsonSerialize());
     }
+
+
+
+    public function __toString() {
+        return $this->toString();
+    }
+
+    /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab = str_repeat("\t", $level);
+        $tab2 = str_repeat("\t", $level-1);
+
+        return
+            "{\n" .
+            $tab . "id => $this->id,\n" .
+            $tab . "name => $this->name,\n" .
+            $tab . "primary => $this->primary,\n" .
+            $tab . "address => $this->address,\n" .
+            $tab . "zipCode => $this->zipCode,\n" .
+            $tab . "city => $this->city,\n" .
+            $tab . "country => $this->country,\n" .
+            $tab . "deliveryTextContent => $this->deliveryTextContent,\n" .
+            $tab . "deliveryTextColor => $this->deliveryTextColor,\n" .
+            $tab . "price => $this->price,\n" .
+            $tab . "priceTextColor => $this->priceTextColor,\n" .
+            $tab2 . "}";
+    }
 }

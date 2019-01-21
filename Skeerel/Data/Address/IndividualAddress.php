@@ -37,9 +37,19 @@ class IndividualAddress extends BaseAddress
      * @return string
      */
     public function __toString() {
+        return $this->toString();
+    }
+
+    /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab2 = str_repeat("\t", $level-1);
+
         return
-        "{\n" .
-            parent::__toString() . "\n" .
-        "}";
+            "{\n" .
+                parent::toString($level) . "\n" .
+            $tab2 . "}";
     }
 }

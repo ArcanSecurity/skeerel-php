@@ -229,7 +229,7 @@ abstract class Enum implements \JsonSerializable
                     return $enumInstance;
                 }
 
-                if ($caseInsensitive && strcasecmp($enumInstance->getValue(), $value === 0)) {
+                if ($caseInsensitive && strcasecmp($enumInstance->getValue(), $value) === 0) {
                     return $enumInstance;
                 }
             }

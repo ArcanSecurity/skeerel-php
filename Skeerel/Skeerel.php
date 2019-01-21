@@ -6,6 +6,7 @@
 namespace Skeerel;
 
 use Skeerel\Data\Data;
+use Skeerel\Data\Payment\Payment;
 use Skeerel\Exception\APIException;
 use Skeerel\Exception\IllegalArgumentException;
 use Skeerel\Util\Random;
@@ -83,6 +84,111 @@ class Skeerel
         }
 
         return new Data($json['data']);
+    }
+
+    /**
+     * @param $paymentId
+     * @return Payment
+     * @throws APIException
+     * @throws Exception\DecodingException
+     * @throws IllegalArgumentException
+     */
+    public function getPayment($paymentId) {
+        if (!is_string($paymentId)) {
+            throw new IllegalArgumentException("paymentId must be a string");
+        }
+
+        $json = Request::getJson(self::API_BASE . 'payment/get', array(
+            "payment_id" => $paymentId,
+            "website_id" => $this->websiteID,
+            "website_secret" => $this->websiteSecret
+        ));
+
+        if (!isset($json['status']) || "ok" !== $json['status']) {
+            $errorCode = isset($json['error_code']) && is_int($json['error_code']) ? $json['error_code'] : '';
+            $errorMsg = isset($json['message']) && is_string($json['message']) ? $json['message'] : '';
+            throw new APIException("Error " . $errorCode . ": " . $errorMsg);
+        }
+
+        if (!isset($json['data'])) {
+            throw new APIException("Unexpected error: status is ok, but cannot get data");
+        }
+
+        return new Payment($json['data']);
+    }
+
+    /**
+     * @param bool|null $live
+     * @param int|null $first
+     * @param int|null $limit
+     * @return Payment[]
+     * @throws APIException
+     * @throws Exception\DecodingException
+     * @throws IllegalArgumentException
+     */
+    public function listPayments($live = null, $first = null, $limit = null) {
+        $parameters = array(
+            "website_id" => $this->websiteID,
+            "website_secret" => $this->websiteSecret
+        );
+
+        if (is_bool($live)) {
+            $parameters["live"] = $live;
+        }
+
+        if (is_int($first)) {
+            $parameters["first"] = $first;
+        }
+
+        if (is_int($limit)) {
+            $parameters["limit"] = $limit;
+        }
+
+        $json = Request::getJson(self::API_BASE . 'payment/list', $parameters);
+
+        if (!isset($json['status']) || "ok" !== $json['status']) {
+            $errorCode = isset($json['error_code']) && is_int($json['error_code']) ? $json['error_code'] : '';
+            $errorMsg = isset($json['message']) && is_string($json['message']) ? $json['message'] : '';
+            throw new APIException("Error " . $errorCode . ": " . $errorMsg);
+        }
+
+        if (!isset($json['data'])) {
+            throw new APIException("Unexpected error: status is ok, but cannot get data");
+        }
+
+        $payments = array();
+        foreach ($json['data'] as $payment) {
+            array_push($payments, new Payment($payment));
+        }
+
+        return $payments;
+    }
+
+    /**
+     * @param $paymentId
+     * @return bool
+     * @throws APIException
+     * @throws Exception\DecodingException
+     * @throws IllegalArgumentException
+     */
+    public function refundPayment($paymentId) {
+        if (!is_string($paymentId)) {
+            throw new IllegalArgumentException("paymentId must be a string");
+        }
+
+        $json = Request::getJson(self::API_BASE . 'payment/refund', array(
+            "payment_id" => $paymentId,
+            "website_id" => $this->websiteID,
+            "website_secret" => $this->websiteSecret
+        ));
+
+        if (!isset($json['status']) || "ok" !== $json['status']) {
+            $errorCode = isset($json['error_code']) && is_int($json['error_code']) ? $json['error_code'] : '';
+            $errorMsg = isset($json['message']) && is_string($json['message']) ? $json['message'] : '';
+            throw new APIException("Error " . $errorCode . ": " . $errorMsg);
+        }
+
+        return true;
     }
 
     /**

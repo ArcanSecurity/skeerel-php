@@ -104,12 +104,23 @@ class CompanyAddress extends BaseAddress
      * @return string
      */
     public function __toString() {
+        return $this->toString();
+    }
+
+    /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab = str_repeat("\t", $level);
+        $tab2 = str_repeat("\t", $level-1);
+
         return
-        "{\n" .
-            "\t status => $this->status,\n" .
-            "\t companyName => $this->companyName,\n" .
-            "\t vatNumber => $this->vatNumber,\n" .
-            parent::__toString() . "\n" .
-        "}";
+            "{\n" .
+                $tab . "status => $this->status,\n" .
+                $tab . "companyName => $this->companyName,\n" .
+                $tab . "vatNumber => $this->vatNumber,\n" .
+                parent::toString($level) . "\n" .
+            $tab2 . "}";
     }
 }

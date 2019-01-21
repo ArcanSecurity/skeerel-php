@@ -117,13 +117,23 @@ class User
      * @return string
      */
     public function __toString() {
+        return $this->toString();
+    }
+
+    /**
+     * @param int $level
+     * @return string
+     */
+    public function toString($level = 1) {
+        $tab = str_repeat("\t", $level);
+        $tab2 = str_repeat("\t", $level-1);
         return
             "{\n" .
-            "\t uid => $this->uid,\n" .
-            "\t firstName => $this->firstName,\n" .
-            "\t lastName => $this->lastName,\n" .
-            "\t mail => $this->mail,\n" .
-            "\t mailVerified => $this->mailVerified,\n" .
-            "}";
+                $tab . "uid => $this->uid,\n" .
+                $tab . "firstName => $this->firstName,\n" .
+                $tab . "lastName => $this->lastName,\n" .
+                $tab . "mail => $this->mail,\n" .
+                $tab . "mailVerified => $this->mailVerified,\n" .
+            $tab2 . "}";
     }
 }

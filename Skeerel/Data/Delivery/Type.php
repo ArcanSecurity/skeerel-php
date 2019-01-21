@@ -16,7 +16,7 @@ use Skeerel\Util\Enum;
  * @method static Type RELAY()
  * @method static Type COLLECT()
  */
-abstract class Type extends Enum
+class Type extends Enum
 {
     const HOME = "home";
 

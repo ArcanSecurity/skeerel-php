@@ -118,11 +118,11 @@ class DeliveryMethod implements \JsonSerializable
             throw new IllegalArgumentException("Not all mandatory fields are set");
         }
 
-        if ($this->type === Type::HOME && $this->pickUpPoints !== null) {
+        if ($this->type->equals(Type::HOME()) && $this->pickUpPoints !== null) {
             throw new IllegalArgumentException("Home delivery cannot have pick up points");
         }
 
-        if ($this->type !== Type::HOME && ($this->pickUpPoints === null || $this->pickUpPoints->isEmpty())) {
+        if (!$this->type->equals(Type::HOME()) && ($this->pickUpPoints === null || $this->pickUpPoints->isEmpty())) {
             throw new IllegalArgumentException("$this->type must have pick up points");
         }
 
