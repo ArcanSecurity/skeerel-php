@@ -237,6 +237,11 @@ $payment = $skeerel->listPayments(true, 15, 20); // list twenty payments startin
 
 ### Refund payment
 
+```php
+$skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
+$skeerel->refundPayment("32b2fe1a-d987-487b-9fa1-e10964212e76");
+```
+
 # Sample App
 
 If you'd like to see an example of this library in action, 
