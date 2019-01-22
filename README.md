@@ -239,7 +239,8 @@ $payment = $skeerel->listPayments(true, 15, 20); // list twenty payments startin
 
 ```php
 $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
-$skeerel->refundPayment("32b2fe1a-d987-487b-9fa1-e10964212e76");
+$skeerel->refundPayment("32b2fe1a-d987-487b-9fa1-e10964212e76"); // full refund
+$skeerel->refundPayment("32b2fe1a-d987-487b-9fa1-e10964212e76", 100); // partial refund (amount is in the currency's smallest unit. Ex 50€ => 5000)
 ```
 
 # Sample App

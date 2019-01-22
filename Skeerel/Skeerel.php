@@ -165,22 +165,29 @@ class Skeerel
     }
 
     /**
-     * @param $paymentId
+     * @param string $paymentId
+     * @param int $amount
      * @return bool
      * @throws APIException
      * @throws Exception\DecodingException
      * @throws IllegalArgumentException
      */
-    public function refundPayment($paymentId) {
+    public function refundPayment($paymentId, $amount = null) {
         if (!is_string($paymentId)) {
             throw new IllegalArgumentException("paymentId must be a string");
         }
 
-        $json = Request::getJson(self::API_BASE . 'payment/refund', array(
+        $parameters = array(
             "payment_id" => $paymentId,
             "website_id" => $this->websiteID,
             "website_secret" => $this->websiteSecret
-        ));
+        );
+
+        if (is_long($amount) && $amount > 0) {
+            $parameters["amount"] = $amount;
+        }
+
+        $json = Request::getJson(self::API_BASE . 'payment/refund', $parameters);
 
         if (!isset($json['status']) || "ok" !== $json['status']) {
             $errorCode = isset($json['error_code']) && is_int($json['error_code']) ? $json['error_code'] : '';
