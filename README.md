@@ -3,7 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/arcansecurity/skeerel-php/v/stable.svg)](https://packagist.org/packages/arcansecurity/skeerel-php)
 [![License](https://poser.pugx.org/arcansecurity/skeerel-php/license.svg)](https://packagist.org/packages/arcansecurity/skeerel-php)
 
-A PHP library for the Skeerel API [https://docs.skeerel.com](https://docs.skeerel.com)
+A PHP library for the Skeerel API [https://doc.skeerel.com](https://doc.skeerel.com)
 
 # Requirements
 
