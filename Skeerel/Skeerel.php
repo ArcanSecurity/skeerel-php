@@ -199,6 +199,64 @@ class Skeerel
     }
 
     /**
+     * @param string $paymentId
+     * @return bool
+     * @throws APIException
+     * @throws Exception\DecodingException
+     * @throws IllegalArgumentException
+     */
+    public function capturePayment($paymentId) {
+        if (!is_string($paymentId)) {
+            throw new IllegalArgumentException("paymentId must be a string");
+        }
+
+        $parameters = array(
+            "payment_id" => $paymentId,
+            "website_id" => $this->websiteID,
+            "website_secret" => $this->websiteSecret
+        );
+
+        $json = Request::getJson(self::API_BASE . 'payment/capture', $parameters);
+
+        if (!isset($json['status']) || "ok" !== $json['status']) {
+            $errorCode = isset($json['error_code']) && is_int($json['error_code']) ? $json['error_code'] : '';
+            $errorMsg = isset($json['message']) && is_string($json['message']) ? $json['message'] : '';
+            throw new APIException("Error " . $errorCode . ": " . $errorMsg);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $paymentId
+     * @return bool
+     * @throws APIException
+     * @throws Exception\DecodingException
+     * @throws IllegalArgumentException
+     */
+    public function rejectPayment($paymentId) {
+        if (!is_string($paymentId)) {
+            throw new IllegalArgumentException("paymentId must be a string");
+        }
+
+        $parameters = array(
+            "payment_id" => $paymentId,
+            "website_id" => $this->websiteID,
+            "website_secret" => $this->websiteSecret
+        );
+
+        $json = Request::getJson(self::API_BASE . 'payment/reject', $parameters);
+
+        if (!isset($json['status']) || "ok" !== $json['status']) {
+            $errorCode = isset($json['error_code']) && is_int($json['error_code']) ? $json['error_code'] : '';
+            $errorMsg = isset($json['message']) && is_string($json['message']) ? $json['message'] : '';
+            throw new APIException("Error " . $errorCode . ": " . $errorMsg);
+        }
+
+        return true;
+    }
+
+    /**
      * @param string $sessionName
      * @throws Exception\SessionNotStartedException
      * @throws IllegalArgumentException
