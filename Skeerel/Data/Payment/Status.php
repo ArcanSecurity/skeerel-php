@@ -17,6 +17,8 @@ use Skeerel\Util\Enum;
  * @method static Status CANCELED()
  * @method static Status PAID()
  * @method static Status REFUNDED()
+ * @method static Status REJECTED()
+ * @method static Status PARTIALLY_REFUNDED()
  * @method static Status REFUND_FAILED()
  * @method static Status DISPUTED()
  * @method static Status DISPUTE_LOST()
@@ -33,6 +35,10 @@ class Status extends Enum
     const PAID = 'PAID';
 
     const REFUNDED = 'REFUNDED';
+
+    const REJECTED = 'REJECTED';
+
+    const PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED';
 
     const REFUND_FAILED = 'REFUND_FAILED';
 
