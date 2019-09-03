@@ -13,14 +13,14 @@ Minimum PHP version: 5.4.0
 
 ## Via composer
 
-`composer require arcansecurity/skeerel-php 2.2.0`
+`composer require arcansecurity/skeerel-php 2.3.0`
 
 Or in your `composer.json` file:
 
 ```
 {
   "require": {
-    "arcansecurity/skeerel-php": "2.2.0"
+    "arcansecurity/skeerel-php": "2.3.0"
   }
 }
 ```
@@ -241,6 +241,21 @@ $payment = $skeerel->listPayments(true, 15, 20); // list twenty payments startin
 $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
 $skeerel->refundPayment("32b2fe1a-d987-487b-9fa1-e10964212e76"); // full refund
 $skeerel->refundPayment("32b2fe1a-d987-487b-9fa1-e10964212e76", 100); // partial refund (amount is in the currency's smallest unit. Ex 50€ => 5000)
+```
+
+### Reviewing a payment
+
+When a payment seems suspect, Skeerel hold the money but does not capture it. 
+
+This way you can review the payment manually and only capture the amount if the payment is legit (thus, avoiding dispute). 
+If it is fraudulent you can just reject the payment. If the payment is not rejected within seven days, the payment is automatically canceled.
+
+The following code shows how to capture or reject a payment.
+
+```php
+$skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
+$skeerel->capturePayment("32b2fe1a-d987-487b-9fa1-e10964212e76"); // payment is legit, capture it
+$skeerel->rejectPayment("32b2fe1a-d987-487b-9fa1-e10964212e76"); // payment is fraudulent, reject it
 ```
 
 # Sample App
