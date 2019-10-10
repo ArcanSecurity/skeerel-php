@@ -38,7 +38,7 @@ Then, to use the bindings, include the `init.php` file.
 ### Generate a state token
 
 When you display the login page to your user, you have to set a 
-session token in order to avoid some [XSRF attacks](https://auth0.com/docs/protocols/oauth2/oauth-state).
+session token in order to avoid some [XSRF attacks](https://www.youtube.com/watch?v=_xrhWLqX1j0).
 The following line will do the job for you
 
 ```php
@@ -256,6 +256,13 @@ The following code shows how to capture or reject a payment.
 $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
 $skeerel->capturePayment("32b2fe1a-d987-487b-9fa1-e10964212e76"); // payment is legit, capture it
 $skeerel->rejectPayment("32b2fe1a-d987-487b-9fa1-e10964212e76"); // payment is fraudulent, reject it
+```
+
+### Get details of a website
+
+```php
+$skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
+$skeerel->getWebsiteDetails();
 ```
 
 # Sample App

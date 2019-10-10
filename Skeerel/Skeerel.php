@@ -7,6 +7,7 @@ namespace Skeerel;
 
 use Skeerel\Data\Data;
 use Skeerel\Data\Payment\Payment;
+use Skeerel\Data\Website\Website;
 use Skeerel\Exception\APIException;
 use Skeerel\Exception\IllegalArgumentException;
 use Skeerel\Util\Random;
@@ -254,6 +255,31 @@ class Skeerel
         }
 
         return true;
+    }
+
+    /**
+     * @return Website
+     * @throws APIException
+     * @throws Exception\DecodingException
+     * @throws IllegalArgumentException
+     */
+    public function getWebsiteDetails() {
+        $json = Request::getJson(self::API_BASE . 'website/details', array(
+            "website_id" => $this->websiteID,
+            "website_secret" => $this->websiteSecret
+        ));
+
+        if (!isset($json['status']) || "ok" !== $json['status']) {
+            $errorCode = isset($json['error_code']) && is_int($json['error_code']) ? $json['error_code'] : '';
+            $errorMsg = isset($json['message']) && is_string($json['message']) ? $json['message'] : '';
+            throw new APIException("Error " . $errorCode . ": " . $errorMsg);
+        }
+
+        if (!isset($json['data'])) {
+            throw new APIException("Unexpected error: status is ok, but cannot get data");
+        }
+
+        return new Website($json['data']);
     }
 
     /**
