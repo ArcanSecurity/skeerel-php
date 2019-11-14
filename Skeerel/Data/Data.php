@@ -18,6 +18,11 @@ class Data
     private $user;
 
     /**
+     * @var string
+     */
+    private $custom;
+
+    /**
      * @var Delivery
      */
     private $delivery;
@@ -39,6 +44,10 @@ class Data
 
         $this->user = new User($data['user']);
 
+        if (isset($data['custom']) && is_string($data['custom'])) {
+            $this->custom = $data['custom'];
+        }
+
         if (isset($data['payment'])) {
             $this->payment = new PaymentData($data['payment']);
 
@@ -53,6 +62,14 @@ class Data
      */
     public function getUser() {
         return $this->user;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustom()
+    {
+        return $this->custom;
     }
 
     /**
@@ -86,6 +103,7 @@ class Data
         return
             "{\n" .
                 $tab . "user => " . $this->user->toString($level+1) . ",\n" .
+                $tab . "custom => " . $this->custom . ",\n" .
                 $tab . "delivery => " . ($this->delivery !== null ? $this->delivery->toString($level+1) : "") .",\n" .
                 $tab . "payment => " . ($this->payment !== null ? $this->payment->toString($level+1) : "") . ",\n" .
             $tab2 . "}";
