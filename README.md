@@ -50,7 +50,7 @@ The following line will do the job for you
 
 ### Show the button
 
-In order to connect or pay, a user must clic on the Skeerel button.
+In order to connect or pay, a user must click on the Skeerel button.
 
 It's quite simple to insert the button on your page. Just paste this
 code where you want the button to appear
@@ -60,13 +60,15 @@ code where you want the button to appear
         data-website-id="YOUR_WEBSITE_ID"
         data-state="<?php echo \Skeerel\Util\Session::get(\Skeerel\Skeerel::DEFAULT_COOKIE_NAME); ?>"
         data-redirect-url="The url where the user will be redirected once he has complete"
+        data-profile-id="SKEEREL_PROFILE_ID" // to force the payment being done with a particular profile
         data-need-shipping-address="" // in case you need a shipping address
         data-need-billing-address="" // in case you need a billing address
         data-delivery-methods-url="https://site.com/delivery_methods.php?user=__USER__&zip_code=__ZIP_CODE__&city=__CITY__&country=__COUNTRY__" // If you need to ship something to the user
         data-checkout="" // If the session is for the user to pay
         data-payment-test="" // If the payment must be done in test mode
         data-amount="1000" // Amount is in the smallest common currency unit. For instance here 10,00€ 10.00USD, ¥1000
-        data-currency="eur" // The currency of the transaction></script>
+        data-currency="eur" // The currency of the transaction
+        data-custom="{'product_id': 3000}" // some custom data (if necessary)></script>
 ```
 
 ### Dealing with delivery method
