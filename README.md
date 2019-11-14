@@ -13,14 +13,14 @@ Minimum PHP version: 5.4.0
 
 ## Via composer
 
-`composer require arcansecurity/skeerel-php 2.4.0`
+`composer require arcansecurity/skeerel-php 2.5.0`
 
 Or in your `composer.json` file:
 
 ```
 {
   "require": {
-    "arcansecurity/skeerel-php": "2.4.0"
+    "arcansecurity/skeerel-php": "2.5.0"
   }
 }
 ```
