@@ -37,6 +37,11 @@ class Website
     private $status;
 
     /**
+     * @var string[]
+     */
+    private $domains;
+
+    /**
      * User constructor.
      * @param array $data
      * @throws IllegalArgumentException
@@ -64,6 +69,15 @@ class Website
 
         if (isset($data['status']) && is_string($data['status'])) {
             $this->status = Status::fromStrValue($data['status'], true);
+        }
+
+        if (isset($data['domains']) && is_array($data['domains'])) {
+            $this->domains = [];
+            foreach($data['domains'] as $domain) {
+                if (is_string($domain)) {
+                    $this->domains[] = $domain;
+                }
+            }
         }
     }
 
@@ -107,6 +121,13 @@ class Website
         return $this->status;
     }
 
+    /**
+     * @return string[]
+     */
+    public function getDomains()
+    {
+        return $this->domains;
+    }
 
     /**
      * @return string
@@ -129,6 +150,7 @@ class Website
                 $tab . "image => $this->image,\n" .
                 $tab . "url => $this->url,\n" .
                 $tab . "status => $this->status,\n" .
+                $tab . "domains => $this->domains,\n" .
             $tab2 . "}";
     }
 }
