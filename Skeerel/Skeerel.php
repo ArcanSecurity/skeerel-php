@@ -184,7 +184,10 @@ class Skeerel
             "website_secret" => $this->websiteSecret
         );
 
-        if (is_long($amount) && $amount > 0) {
+        if ($amount != null) {
+            if (!is_int($amount) || $amount <= 0) {
+                throw new IllegalArgumentException("amount to be refunded must be an integer. Got " . gettype($amount));
+            }
             $parameters["amount"] = $amount;
         }
 
