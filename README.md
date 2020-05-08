@@ -233,7 +233,7 @@ Payments are ordered by date DESC. Last payment appears first
 ```php
 $skeerel = new \Skeerel\Skeerel('YOUR_WEBSITE_ID', 'YOUR_WEBSITE_SECRET');
 $payment = $skeerel->listPayments(); // last ten payments
-$payment = $skeerel->listPayments(true); // only live payments
+$payment = $skeerel->listPayments(true); // last ten live payments
 $payment = $skeerel->listPayments(true, 15, 20); // list twenty payments starting from the fifteenth index
 ```
 

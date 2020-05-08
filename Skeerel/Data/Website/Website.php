@@ -48,7 +48,7 @@ class Website
      */
     function __construct($data) {
         if (!is_array($data)) {
-            throw new IllegalArgumentException("User cannot be parsed due to incorrect data");
+            throw new IllegalArgumentException("Website cannot be parsed due to incorrect data");
         }
 
         if (isset($data['id']) && is_string($data['id']) && UUID::isValid($data['id'])) {

@@ -186,7 +186,7 @@ class Skeerel
 
         if ($amount != null) {
             if (!is_int($amount) || $amount <= 0) {
-                throw new IllegalArgumentException("amount to be refunded must be an integer. Got " . gettype($amount));
+                throw new IllegalArgumentException("amount to be refunded must be an integer higher than 0. Got " . gettype($amount) . " - " . $amount);
             }
             $parameters["amount"] = $amount;
         }

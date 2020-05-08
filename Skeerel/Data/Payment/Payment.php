@@ -32,12 +32,17 @@ class Payment
     private $amount;
 
     /**
+     * @var int
+     */
+    private $amountRefunded;
+
+    /**
      * @var Currency
      */
     private $currency;
 
     /**
-     * @var string
+     * @var Status
      */
     private $status;
 
@@ -100,6 +105,10 @@ class Payment
 
         if (isset($data['amount']) && is_int($data['amount'])) {
             $this->amount = $data['amount'];
+        }
+
+        if (isset($data['amount_refunded']) && is_int($data['amount_refunded'])) {
+            $this->amount = $data['amount_refunded'];
         }
 
         if (isset($data['currency']) && is_string($data['currency'])) {
@@ -201,6 +210,22 @@ class Payment
     public function setAmount($amount)
     {
         $this->amount = $amount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmountRefunded()
+    {
+        return $this->amountRefunded;
+    }
+
+    /**
+     * @param int $amountRefunded
+     */
+    public function setAmountRefunded($amountRefunded)
+    {
+        $this->amountRefunded = $amountRefunded;
     }
 
     /**
@@ -368,6 +393,7 @@ class Payment
                 $tab . "date => " . $this->date->format(DateTime::ISO8601) . ",\n" .
                 $tab . "profile_id => $this->profileId,\n" .
                 $tab . "amount => $this->amount,\n" .
+                $tab . "amountRefunded => $this->amountRefunded,\n" .
                 $tab . "currency => $this->currency,\n" .
                 $tab . "status => $this->status,\n" .
                 $tab . "live => $this->live,\n" .
