@@ -108,7 +108,7 @@ class Payment
         }
 
         if (isset($data['amount_refunded']) && is_int($data['amount_refunded'])) {
-            $this->amount = $data['amount_refunded'];
+            $this->amountRefunded = $data['amount_refunded'];
         }
 
         if (isset($data['currency']) && is_string($data['currency'])) {
